@@ -16,7 +16,7 @@ DDL:数据定义语言：定义数据库、表\删除、修改
 
 DML :数据操作语言   表中数据的增删改查的   
 
-​	如：INSERT\DELECT\UPDATE\SELECT(查找)DQL
+​	如：INSERT\DELETE\UPDATE\SELECT(查找)DQL
 
 DCL：数据控制语言 （控制权限的下发）
 
@@ -44,6 +44,7 @@ SELECT employee_id,department_id
 FROM `uname`;
 
 可以看到，要是你有一张表的名称是uname这个特殊字段，就得用``包起来
+如果表名/字段名和关键字冲突，或含特殊字符，才需要反引号
 ```
 
 
@@ -129,7 +130,7 @@ USE example;
 
 ```
 SELECT 1+2;
-SELECT first_name,salary; ——————————————————————————————————————列就为first_name和salary
+SELECT first_name,salary; ————————————————————————列就为first_name和salary，当然，正常下面应该有from
 
 
 SELECT决定了你所要查询的列
@@ -262,3 +263,16 @@ SELECT * FROM departments;
 4，查询员工号为176的员工的姓名和部门号
 
 5，显示表 departments 的结构，并查询其中的全部数据
+
+
+
+
+
+
+
+```
+SELECT 1 + NULL;
+
+NULL 参与运算结果为 NULL
+```
+
