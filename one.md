@@ -763,13 +763,80 @@ ORDER BY 2;
 
 ```
 SELECT * FROM employees LIMIT 0,3;
-跳过前0条，看10条
+跳过前0条，看3条
 
 SELECT * FROM employees LIMIT 11,3;
-跳过前11条，看10条
+跳过前11条，看3条
 ```
 
 <img src="C:/Users/xgz24/AppData/Roaming/Typora/typora-user-images/image-20261014231328736.png" alt="image-20261014231328736" style="zoom:67%;" />
 
 <img src="C:/Users/xgz24/AppData/Roaming/Typora/typora-user-images/image-20261014231432460.png" alt="image-20261014231432460" style="zoom:67%;" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+小练习：
+
+<img src="C:/Users/xgz24/AppData/Roaming/Typora/typora-user-images/image-20261019170959161.png" alt="image-20261019170959161" style="zoom:67%;" />
+
+
+
+```
+SELECT*FROM employees;
+
+SELECT last_name,department_id,salary*12 AS nianxin
+FROM employees
+ORDER BY nianxin DESC;
+
+SELECT last_name,department_id,salary*12 AS nianxin
+FROM employees
+ORDER BY last_name;
+
+SELECT last_name,salary
+FROM employees
+WHERE salary<8000 || salary>17000
+ORDER BY salary DESC
+LIMIT 20,20;
+
+SELECT last_name,email,department_id
+FROM employees
+WHERE email LIKE '%e%'
+ORDER BY LENGTH(email) DESC; 
+
+SELECT last_name,email,department_id
+FROM employees
+WHERE email LIKE '%e%'
+ORDER BY department_id; 
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
