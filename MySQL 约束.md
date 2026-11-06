@@ -150,6 +150,49 @@ DROP INDEX uk_phone_email;
 -   主键 = `NOT NULL` + `UNIQUE`：**值不能重复，NULL 值不能出现**。
 -   可以是**单列主键**，也可以是**多列组合式主键**。
 
+### 单列主键
+
+三种写法效果一样。
+
+**写法一：列级，直接跟在列后面**
+
+```
+CREATE TABLE primary_single_1 (
+    id INT PRIMARY KEY,
+    name VARCHAR(20)
+);
+```
+
+
+
+**写法二：表级，单独一行声明**
+
+```
+CREATE TABLE primary_single_2 (
+    id INT,
+    name VARCHAR(20),
+    PRIMARY KEY (id)
+);
+```
+
+
+
+**写法三：建表后添加**
+
+```
+CREATE TABLE primary_single_3 (
+    id INT,
+    name VARCHAR(20)
+);
+
+ALTER TABLE primary_single_3
+ADD PRIMARY KEY (id);
+```
+
+
+
+`DESC primary_single_1;` 看 `Key` 列会显示 `PRI`。
+
 ### 组合主键
 
 ```
@@ -175,9 +218,9 @@ DROP PRIMARY KEY;
 
 >   **易错点**：
 >
->   ​	组合主键的每一列都不能为 NULL
->
->   ​	**单独一列可以重复**，只要组合不重复就行。
+>   -   组合主键的每一列都不能为 NULL，是**每一列各自**不能为 NULL，不是“不能同时为 NULL”。
+>   -   **单独一列可以重复**，只要组合不重复就行。比如多行 `uname` 都叫 `'a'` 没问题，只要 `(uname, password)` 组合不重复。
+>   -   单列主键和组合主键都只能有一个主键约束，不能既建单列主键又建组合主键
 
 ## 自增列 AUTO_INCREMENT
 
@@ -189,7 +232,7 @@ DROP PRIMARY KEY;
 2.  一张表**最多只有一个**自增列。
 3.  可以指定自增的**起始点**。
 
-### 建表并使用
+### 方式一：建表时直接设置
 
 ```
 CREATE TABLE auto_in (
@@ -205,6 +248,35 @@ SELECT * FROM auto_in;
 ```
 
 
+
+### 方式二：后期给已有列添加自增
+
+如果表已经建好了，`id` 列当时没写自增，后期加的话**必须用 `MODIFY`**，不能用 `ADD`。
+
+**前提**：这个列必须已经是主键或唯一约束列。如果不是，得先加主键：
+
+```
+-- 1. 先加主键（如果本来就有主键，这一步省略）
+ALTER TABLE auto_in
+ADD PRIMARY KEY (id);
+
+-- 2. 再用 MODIFY 把自增属性加上
+ALTER TABLE auto_in
+MODIFY id INT AUTO_INCREMENT;
+```
+
+
+
+也可以把主键和自增分两列一起写在 `MODIFY` 里：
+
+```
+ALTER TABLE auto_in
+MODIFY id INT AUTO_INCREMENT PRIMARY KEY;
+```
+
+
+
+------
 
 ### 删除数据后自增不回头
 
@@ -232,6 +304,7 @@ DESC auto_in;
 >   **易错点**：
 >
 >   -   自增列必须是整数类型，并且必须是主键或唯一约束列，不能裸写 `AUTO_INCREMENT`。
+>   -   **后期添加自增必须用 `MODIFY`**，不能用 `ADD`；而且不能只写 `ADD AUTO_INCREMENT`，语法不对。
 >   -   `MODIFY id INT` 去掉自增时，不能再写 `PRIMARY KEY`，否则会报“重复定义主键”。
 >   -   `DELETE` 不会重置自增计数器，只有 `TRUNCATE` 才会。
 >   -   `AUTO_INCREMENT` **只能递增，不能递减**。`auto_increment_increment` 控制步长，但值必须大于 0，设成负数会被忽略。
@@ -281,6 +354,8 @@ INSERT INTO employees VALUES (2, '李四', 99);
 ALTER TABLE employees
 ADD CONSTRAINT fk_dept FOREIGN KEY (department_id) REFERENCES departments(id);
 ```
+
+给 `employees` 表的 `department_id` 列加一个名叫 `fk_dept` 的外键，强制它的值必须在 `departments` 表的 `id` 列里存在。
 
 
 
