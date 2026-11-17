@@ -1,4 +1,16 @@
-# MySQL 约束
+# （）MySQL 约束
+
+### 查看约束
+
+```sql
+SELECT CONSTRAINT_NAME,CONSTRAINT_TYPE 
+FROM information_schema.TABLE_CONSTRAINTS 
+WHERE TABLE_NAME='emp';
+```
+
+>   **去 MySQL 的“系统档案室”（information_schema 库）里，把 `emp` 这张表的所有“身份证”（约束）全部查出来，看看它们叫什么名字、是什么类型**
+
+
 
 ## 非空约束 NOT NULL
 
@@ -315,7 +327,7 @@ DESC auto_in;
 
 ### 建表时设置
 
-```
+```sql
 -- 父表：部门
 CREATE TABLE departments (
     id INT PRIMARY KEY,
